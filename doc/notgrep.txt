@@ -1,0 +1,116 @@
+*notgrep.txt*   Not grep, but something similar.
+
+==============================================================================
+Author:  pydave                                               *notgrep-author*
+Based on ack.vim by Antoine Imbert <antoine.imbert+ackvim@gmail.com>
+License: Same terms as Vim itself (see |license|)
+
+==============================================================================
+INTRODUCTION                                                         *notgrep*
+
+NotGrep makes it easy to use replacements for grep. This plugin will allow you
+to run grep-like programs from vim and show the results in a split window.
+
+:NotGrep[!] [options] {pattern} [{directory}]                       *:NotGrep*
+
+    Search recursively in {directory} (which defaults to the current
+    directory) for the {pattern}. Behaves just like the |:grep| command, but
+    will open the |Quickfix| window for you. If [!] is not given the first
+    error is jumped to.
+
+:NotGrepAdd [options] {pattern} [{directory}]                    *:NotGrepAdd*
+
+    Just like |:NotGrep|, but instead of making a new list, the matches are
+    appended to the current |quickfix| list.
+
+:NotGrepFromSearch [{directory}]                          *:NotGrepFromSearch*
+
+    Just like |:NotGrep| but the pattern is from previous search.
+
+:LNotGrep [options] {pattern} [{directory}]                        *:LNotGrep*
+
+    Just like |:NotGrep| but instead of the |quickfix| list, matches are placed in
+    the current |location-list|.
+
+:LNotGrepAdd [options] {pattern} [{directory}]                  *:LNotGrepAdd*
+
+    Just like |:NotGrepAdd| but instead of the |quickfix| list, matches are added
+    to the current |location-list|
+
+:NotGrepFile [options] {pattern} [{directory}]                  *:NotGrepFile*
+
+    Search recursively in {directory} (which defaults to the current
+    directory) for filenames matching the {pattern}. Behaves just like the
+    |:grep| command, but will open the |Quickfix| window for you.
+
+Files containing the search term will be listed in the split window, along
+with the line number of the occurrence, once for each occurrence. <Enter> on
+a line in this window will open the file, and place the cursor on the matching
+line.
+
+==============================================================================
+SEARCH TOOLS                                                   *notgrep-tools*
+
+To use notgrep, you need to setup a search program and a corresponding
+errorformat. For example, to use grep with not grep:
+>
+        let g:notgrep_prg = "grep -nH"
+        let g:notgrep_efm = "%f:%l:%m,%f:%l%m,%f  %l%m"
+<
+
+NotGrep has commands to setup some search tools.
+
+:NotGrepUseAck
+
+        Setup notgrep like the original ack.vim [http://betterthangrep.com/].
+        This is the default if no g:notgrep_prg is specified.
+
+:NotGrepUseCsearch
+
+        Setup notgrep to use csearch. [ https://code.google.com/p/codesearch/ ].
+
+
+==============================================================================
+OPTIONS                                                      *notgrep-options*
+
+*g:notgrep_efm*
+
+    The errorformat that interprets the search tool's output. See
+    |notgrep-tools|.
+
+*g:notgrep_highlight*
+
+    Whether to guess the search query and highlight that after a notgrep
+    search.
+
+*g:notgrep_no_mappings*
+
+    If set, disables quickfix mappings. See |notgrep-mappings|.
+
+*g:notgrep_prg*
+
+    The errorformat that interprets the search tool's output. See
+    |notgrep-tools|.
+
+==============================================================================
+MAPPINGS                                                    *notgrep-mappings*
+
+The following keyboard shortcuts are available in the quickfix window:
+
+o       open file (same as enter).
+
+go      preview file (open but maintain focus on notgrep.vim results).
+
+t       open in a new tab.
+
+T       open in new tab silently.
+
+v       open in vertical split.
+
+gv      open in vertical split silently.
+
+q       close the quickfix window.
+
+==============================================================================
+
+ vim:et:tw=78:ts=8:ft=help:norl:
