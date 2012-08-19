@@ -1,10 +1,5 @@
 " Not grep, but something similar.
 
-" Setup ack as a default
-if !exists('g:notgrep_prg') || !exists("g:notgrep_efm")
-    call s:NotGrepUseAck()
-endif
-
 " To use with ack [ http://betterthangrep.com/ ]
 function! s:NotGrepUseAck()
     let g:notgrep_prg="ack -H --nocolor --nogroup --column"
@@ -16,6 +11,11 @@ function! s:NotGrepUseCsearch()
     let g:notgrep_prg='csearch -n'
     let g:notgrep_efm = "%f:%l:%m"
 endfunction
+
+" Setup ack as a default
+if !exists('g:notgrep_prg') || !exists("g:notgrep_efm")
+    call s:NotGrepUseAck()
+endif
 
 function! s:NotGrep(cmd, args)
     redraw
