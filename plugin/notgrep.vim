@@ -76,6 +76,7 @@ function! s:NotGrepFromSearch(cmd, args)
     let search =  getreg('/')
     " translate vim regular expression to perl regular expression.
     let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
+    let search = substitute(search,'\\V','','g')
     call s:NotGrep(a:cmd, '"' .  search .'" '. a:args)
 endfunction
 
