@@ -43,6 +43,25 @@ Install with [pathogen](https://github.com/tpope/vim-pathogen).
 
 ## Usage ##
 
+General usage is the same across most grep-like programs:
+
+    :NotGrep [options] {pattern}
+
+The particulars are specific to each program.
+
+### Code Search ###
+
+You can use most of the same options as grep:
+
+The -c, -h, -i, -l, and -n flags are as in grep.
+
+As per Go's flag parsing convention, options cannot be grouped: the option pair
+-i -n cannot be abbreviated to -in.
+
+### Ack ###
+
+Ack adds the ability to limit your search to a directory:
+
     :NotGrep [options] {pattern} [{directory}]
 
 Search recursively in {directory} (which defaults to the current directory) for the {pattern}.
@@ -55,7 +74,7 @@ Just like where you use :grep, :grepadd, :lgrep, and :lgrepadd, you can use
 `:NotGrep`, `:NotGrepAdd`, `:LNotGrep`, and `:LNotGrepAdd` respectively. (See
 `doc/notgrep.txt`, or install and `:h NotGrep` for more information.)
 
-**From the [ack docs](http://betterthangrep.com/)** (my favorite feature):
+**From the [ack docs](http://betterthangrep.com/)**:
 
     --type=TYPE, --type=noTYPE
 
@@ -81,11 +100,10 @@ In the quickfix window, you can use:
 
 ## About ##
 
-This Vim plugin is derived (and by derived, I mean copied, essentially) from
-[ack.vim](https://github.com/mileszs/ack.vim) which is derived from Antoine
-Imbert's blog post [Ack and Vim
+This Vim plugin is derived from [ack.vim](https://github.com/mileszs/ack.vim)
+which is derived/copied from Antoine Imbert's blog post [Ack and Vim
 Integration](http://blog.ant0ine.com/typepad/2007/03/ack-and-vim-integration.html)
-(in particular, the function at the bottom of the post).  I added a help file
-that provides just enough reference to get you going.  I also highly recommend
-you check out the docs for the Perl script 'ack', for obvious reasons: [ack -
-grep-like text finder](http://betterthangrep.com/).
+(in particular, the function at the bottom of the post).  It generalizes the
+Ack command into the search tool agnostic NotGrep command.  You should also
+check out the docs for the Perl script 'ack' : [ack - grep-like text
+finder](http://betterthangrep.com/) or the man page for csearch.

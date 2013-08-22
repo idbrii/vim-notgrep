@@ -39,6 +39,8 @@ to run grep-like programs from vim and show the results in a split window.
 
 :NotGrepFile [options] {pattern} [{directory}]                  *:NotGrepFile*
 
+    This command doesn't work with global indexers like Code Search.
+
     Search recursively in {directory} (which defaults to the current
     directory) for filenames matching the {pattern}. Behaves just like the
     |:grep| command, but will open the |Quickfix| window for you.
@@ -67,7 +69,7 @@ NotGrep has commands to setup some search tools.
 
 :NotGrepUseCsearch
 
-        Setup notgrep to use csearch. [ https://code.google.com/p/codesearch/ ].
+        Setup notgrep to use csearch. [https://code.google.com/p/codesearch/].
 
 
 ==============================================================================
