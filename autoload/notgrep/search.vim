@@ -50,19 +50,40 @@ function! notgrep#search#NotGrep(cmd, args)
 
     " If highlighting is on, highlight the search keyword.
     if exists("g:notgrep_highlight")
-        let @/=a:args
+        let @/=notgrep#search#ConvertRegexPerlToVim(a:args)
         set hlsearch
     end
 
     redraw!
 endfunction
 
-function! notgrep#search#NotGrepFromSearch(cmd, args)
-    let search =  getreg('/')
-    " translate vim regular expression to perl regular expression.
+function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
+    " Translate vim regular expression to perl regular expression (what grep
+    " uses).
+    let search = a:vim_regex
     let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
     let search = substitute(search,'\\V','','g')
-    call notgrep#search#NotGrep(a:cmd, '"' .  search .'" '. a:args)
+    "let search = substitute(search,'\\c','(?i)','g')
+    "let search = substitute(search,'\\C','(?-i)','g')
+    return search
+endfunction
+
+function! notgrep#search#ConvertRegexPerlToVim(perl_regex)
+    " Translate perl regular expression to vim regular expression.
+    let search = a:perl_regex
+    let search = substitute(search,'\\b','','g')
+    "let search = substitute(search,'(?i)','\\c','g')
+    "let search = substitute(search,'(?-i)','\\C','g')
+    return search
+endfunction
+
+function! notgrep#search#NotGrepFromSearch(cmd, args)
+    let vim_search = getreg('/')
+    let search = notgrep#search#ConvertRegexVimToPerl(vim_search)
+    call notgrep#search#NotGrep(a:cmd, '"' . search .'" '. a:args)
+
+    " The conversion is lossy, so keep our original query.
+    let @/=vim_search
 endfunction
 
 " vi: et sw=4 ts=4
