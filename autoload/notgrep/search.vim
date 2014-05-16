@@ -59,12 +59,10 @@ endfunction
 
 function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
     " Translate vim regular expression to perl regular expression (what grep
-    " uses).
+    " uses). Only a partial translation. See perl-patterns for more details.
     let search = a:vim_regex
     let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
     let search = substitute(search,'\\V','','g')
-    "let search = substitute(search,'\\c','(?i)','g')
-    "let search = substitute(search,'\\C','(?-i)','g')
     return search
 endfunction
 
@@ -72,8 +70,6 @@ function! notgrep#search#ConvertRegexPerlToVim(perl_regex)
     " Translate perl regular expression to vim regular expression.
     let search = a:perl_regex
     let search = substitute(search,'\\b','','g')
-    "let search = substitute(search,'(?i)','\\c','g')
-    "let search = substitute(search,'(?-i)','\\C','g')
     return search
 endfunction
 
