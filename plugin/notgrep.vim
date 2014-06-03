@@ -1,5 +1,10 @@
 " Not grep, but something similar.
 
+if exists("g:notgrep_loaded")
+    finish
+endif
+let g:notgrep_loaded = 1
+
 " Setup ack as a default
 if !exists('g:notgrep_prg') || !exists("g:notgrep_efm")
     call notgrep#setup#NotGrepUseAck()
