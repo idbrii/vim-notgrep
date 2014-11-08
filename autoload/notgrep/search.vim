@@ -61,8 +61,36 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
     " Translate vim regular expression to perl regular expression (what grep
     " uses). Only a partial translation. See perl-patterns for more details.
     let search = a:vim_regex
-    let search = substitute(search,'\(\\<\|\\>\)','\\b','g')
+    let search = substitute(search, '\C\\v', '', 'g')
+    let was_verymagic = len(search) < len(a:vim_regex)
+
+    let escape = '\\'
+    let unescape = ''
+    if was_verymagic
+        " verymagic flips escaping rules
+        let escape = ''
+        let unescape = '\\'
+    endif
+
+    " No easy support for disabling regex so ignore
     let search = substitute(search,'\\V','','g')
+    " PCRE word boundaries
+    let search = substitute(search,'\('. escape .'<\|'. escape .'>\)','\\b','g')
+
+    if was_verymagic
+        " Always need to escape pipe in shell
+        let search = substitute(search, '|','\\|','g')
+    else
+        " PCRE operates a bit like verymagic, so remove some escaping
+
+        " Dot regular unescaped parens
+        let search = substitute(search, '\v(\\)@<![()]','.','g')
+        " Remove escape from escaped capture parens
+        let search = substitute(search, '\v\\([()])','\1','g')
+
+        " Unescape some multis
+        let search = substitute(search,'\v\\([+=?])','\1','g')
+    endif
     return search
 endfunction
 
