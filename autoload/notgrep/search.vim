@@ -77,6 +77,33 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
     " PCRE word boundaries
     let search = substitute(search,'\('. escape .'<\|'. escape .'>\)','\\b','g')
 
+    " PCRE character classes
+    let character_classes = {
+                \ 's' : '[ \\t]',
+                \ 'S' : '[^ \\t]',
+                \ 'd' : '[0-9]',
+                \ 'D' : '[^0-9]',
+                \ 'x' : '[0-9A-Fa-f]',
+                \ 'X' : '[^0-9A-Fa-f]',
+                \ 'o' : '[0-7]',
+                \ 'O' : '[^0-7]',
+                \ 'w' : '[0-9A-Za-z_]',
+                \ 'W' : '[^0-9A-Za-z_]',
+                \ 'h' : '[A-Za-z_]',
+                \ 'H' : '[^A-Za-z_]',
+                \ 'a' : '[A-Za-z]',
+                \ 'A' : '[^A-Za-z]',
+                \ 'l' : '[a-z]',
+                \ 'L' : '[^a-z]',
+                \ 'u' : '[A-Z]',
+                \ 'U' : '[^A-Z]',
+                \ }
+
+    for vim_class in keys(character_classes)
+        " case is very important!
+        let search = substitute(search, '\C\\'. vim_class .'\>', character_classes[vim_class], 'g')
+    endfor
+
     if was_verymagic
         " Always need to escape pipe in shell
         let search = substitute(search, '|','\\|','g')
