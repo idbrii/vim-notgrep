@@ -79,11 +79,11 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
 
     " PCRE character classes
     let character_classes = {
-                \ 's' : '[ \\t]',
+                \ 's' : '[[:space:]]',
                 \ 'S' : '[^ \\t]',
-                \ 'd' : '[0-9]',
+                \ 'd' : '[[:digit:]]',
                 \ 'D' : '[^0-9]',
-                \ 'x' : '[0-9A-Fa-f]',
+                \ 'x' : '[[:xdigit:]]',
                 \ 'X' : '[^0-9A-Fa-f]',
                 \ 'o' : '[0-7]',
                 \ 'O' : '[^0-7]',
@@ -91,14 +91,13 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
                 \ 'W' : '[^0-9A-Za-z_]',
                 \ 'h' : '[A-Za-z_]',
                 \ 'H' : '[^A-Za-z_]',
-                \ 'a' : '[A-Za-z]',
+                \ 'a' : '[[:alpha:]]',
                 \ 'A' : '[^A-Za-z]',
-                \ 'l' : '[a-z]',
+                \ 'l' : '[[:lower:]]',
                 \ 'L' : '[^a-z]',
-                \ 'u' : '[A-Z]',
+                \ 'u' : '[[:upper:]]',
                 \ 'U' : '[^A-Z]',
                 \ }
-
     for vim_class in keys(character_classes)
         " case is very important!
         let search = substitute(search, '\C\\'. vim_class .'\>', character_classes[vim_class], 'g')
