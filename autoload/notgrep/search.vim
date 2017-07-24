@@ -72,6 +72,12 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
         let unescape = '\\'
     endif
 
+    " Some funky scripting for notgrep_prg may not handle spaces (using xargs
+    " to grep a list of files).
+    if exists("g:notgrep_replace_space_with_dot") && g:notgrep_replace_space_with_dot
+        let search = substitute(search,' ','.','g')
+    endif
+
     " No easy support for disabling regex so ignore
     let search = substitute(search,'\\V','','g')
     " PCRE word boundaries
