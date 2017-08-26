@@ -78,6 +78,9 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
         let search = substitute(search,' ','.','g')
     endif
 
+    " Don't let the shell get confused by quotes.
+    let search = substitute(search,"[\"']",'.','g')
+
     " No easy support for disabling regex so ignore
     let search = substitute(search,'\\V','','g')
     " PCRE word boundaries
@@ -136,7 +139,7 @@ endfunction
 function! notgrep#search#NotGrepFromSearch(cmd, args)
     let vim_search = getreg('/')
     let search = notgrep#search#ConvertRegexVimToPerl(vim_search)
-    call notgrep#search#NotGrep(a:cmd, '"' . search .'" '. a:args)
+    call notgrep#search#NotGrep(a:cmd, shellescape(search) .' '. a:args)
 
     " The conversion is lossy, so keep our original query.
     let @/=vim_search
