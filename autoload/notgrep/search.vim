@@ -32,6 +32,7 @@ function! notgrep#search#NotGrep(cmd, args)
         if use_asyncgrep
             execute "AsyncGrep " . l:grepargs
         else
+            " Silent to hide cmd window on windows and cmdline vim.
             silent execute a:cmd . " " . l:grepargs
         endif
     finally
