@@ -3,9 +3,6 @@
 " Search and core plugin implementation.
 
 function! notgrep#search#NotGrep(cmd, args)
-    redraw
-    echo "Searching ..."
-
     " Use AsyncCommand's :AsyncGrep if possible.
     " Only grep is replaceable with async grep. Others do vim-specific stuff.
     let use_asyncgrep = exists(':AsyncGrep') == 2 && a:cmd == 'grep'
@@ -67,6 +64,7 @@ function! notgrep#search#NotGrep(cmd, args)
     end
 
     redraw!
+    echo "Searching ..."
 endfunction
 
 function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
