@@ -98,6 +98,14 @@ In the quickfix window, you can use:
     gv   to open in vertical split silently
     q    to close the quickfix window
 
+
+## Integration ##
+
+If [AsyncCommand](https://github.com/idbrii/AsyncCommand) is available,
+`:NotGrep` search will be asynchronous. Other commands (`:NotGrepAdd`, etc)
+will still be synchronous.
+
+
 ## About ##
 
 This Vim plugin is derived from [ack.vim](https://github.com/mileszs/ack.vim)

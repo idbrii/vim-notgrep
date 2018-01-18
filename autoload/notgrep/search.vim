@@ -6,6 +6,10 @@ function! notgrep#search#NotGrep(cmd, args)
     redraw
     echo "Searching ..."
 
+    " Use AsyncCommand's :AsyncGrep if possible.
+    " Only grep is replaceable with async grep. Others do vim-specific stuff.
+    let use_asyncgrep = exists(':AsyncGrep') == 2 && a:cmd == 'grep'
+
     " If no pattern is provided, search for the word under the cursor
     if empty(a:args)
         let l:grepargs = expand("<cword>")
@@ -25,16 +29,23 @@ function! notgrep#search#NotGrep(cmd, args)
     try
         let &grepprg = g:notgrep_prg
         let &grepformat = l:grepformat
-        silent execute a:cmd . " " . l:grepargs
+        if use_asyncgrep
+            execute "AsyncGrep " . l:grepargs
+        else
+            silent execute a:cmd . " " . l:grepargs
+        endif
     finally
         let &grepprg = grepprg_bak
         let &grepformat = grepformat_bak
     endtry
 
-    if a:cmd =~# '^l'
-        botright lopen
-    else
-        botright copen
+    " AsyncGrep will open it when it completes.
+    if !use_asyncgrep
+        if a:cmd =~# '^l'
+            botright lopen
+        else
+            botright copen
+        endif
     endif
 
     if !exists("g:notgrep_no_mappings") || !g:notgrep_no_mappings
