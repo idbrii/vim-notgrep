@@ -16,7 +16,7 @@ endfunction
 
 " To use with grep
 function! notgrep#setup#NotGrepUseGrepRecursiveFrom(root_dir)
-    let g:notgrep_prg = &grepprg .' $* -R '. a:root_dir
+    let g:notgrep_prg = &grepprg .' "$*" -R '. resolve(fnamemodify(expand(a:root_dir), ':p'))
     let g:notgrep_efm = "%f:%l:%m"
 endfunction
 
