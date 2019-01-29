@@ -1,7 +1,7 @@
 *notgrep.txt*   Not grep, but something similar.
 
 ==============================================================================
-Author:  pydave                                               *notgrep-author*
+Author:  idbrii                                               *notgrep-author*
 Based on ack.vim by Antoine Imbert <antoine.imbert+ackvim@gmail.com>
 License: Same terms as Vim itself (see |license|)
 
