@@ -59,7 +59,7 @@ function! notgrep#search#NotGrep(cmd, args)
 
     " If highlighting is on, highlight the search keyword.
     if exists("g:notgrep_highlight")
-        let @/=notgrep#search#ConvertRegexPerlToVim(a:args)
+        let @/ = notgrep#search#ConvertRegexPerlToVim(l:grepargs)
         set hlsearch
     end
 
