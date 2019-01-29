@@ -5,7 +5,7 @@
 function! notgrep#search#NotGrep(cmd, args)
     " Use AsyncCommand's :AsyncGrep if possible.
     " Only grep is replaceable with async grep. Others do vim-specific stuff.
-    let use_asyncgrep = exists(':AsyncGrep') == 2 && a:cmd == 'grep'
+    let use_asyncgrep = g:notgrep_allow_async && exists(':AsyncGrep') == 2 && a:cmd == 'grep'
 
     " If no pattern is provided, search for the word under the cursor
     if empty(a:args)
@@ -13,6 +13,10 @@ function! notgrep#search#NotGrep(cmd, args)
     else
         let l:grepargs = a:args
     end
+
+    " Separately store requested query and escaped version for grep.
+    let l:query = l:grepargs
+    let l:grepargs = shellescape(l:grepargs)
 
     " Format, used to manage column jump
     if a:cmd =~# '-g$'
@@ -59,7 +63,7 @@ function! notgrep#search#NotGrep(cmd, args)
 
     " If highlighting is on, highlight the search keyword.
     if exists("g:notgrep_highlight")
-        let @/ = notgrep#search#ConvertRegexPerlToVim(l:grepargs)
+        let @/ = notgrep#search#ConvertRegexPerlToVim(l:query)
         set hlsearch
     end
 
@@ -146,10 +150,10 @@ function! notgrep#search#ConvertRegexPerlToVim(perl_regex)
     return search
 endfunction
 
-function! notgrep#search#NotGrepFromSearch(cmd, args)
+function! notgrep#search#NotGrepFromSearch(cmd)
     let vim_search = getreg('/')
     let search = notgrep#search#ConvertRegexVimToPerl(vim_search)
-    call notgrep#search#NotGrep(a:cmd, shellescape(search) .' '. a:args)
+    call notgrep#search#NotGrep(a:cmd, search)
 
     " The conversion is lossy, so keep our original query.
     let @/=vim_search

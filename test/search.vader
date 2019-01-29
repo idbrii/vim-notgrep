@@ -1,0 +1,73 @@
+Include: config.vader
+
+Before(Get test functions):
+  call SetupRecursiveGrep()
+
+Execute(Most common):
+  NotGrep csearch
+Then:
+  AssertEqual CountQuickFixLines(), 1
+
+Execute(With escaped spaces):
+  NotGrep has\ commands
+Then:
+  AssertEqual CountQuickFixLines(), 1
+
+Execute(With unescaped spaces):
+  NotGrep has commands
+Then:
+  AssertEqual CountQuickFixLines(), 1
+
+" Unmatched quotes hangs win32 gvim.
+" Execute(Containing quotes):
+"   NotGrep tool\'s
+"   NotGrep tool's
+" Then:
+"   AssertEqual CountQuickFixLines(), 2
+"   AssertEqual @/, "tool's"
+
+Execute(Wrapped with quotes):
+  NotGrep "grep -nH"
+Then:
+  AssertEqual CountQuickFixLines(), 1
+  AssertEqual @/, '"grep -nH"'
+
+Execute(From last search):
+  let @/ = 'direct'
+  NotGrepFromSearch
+Then:
+  AssertEqual CountQuickFixLines(), 10
+
+Execute(Whole word):
+  let @/ = '\<direct\>'
+  NotGrepFromSearch
+Then:
+  AssertEqual CountQuickFixLines(), 0
+
+Given(Some text):
+  Setup notgrep like the original ack.vim [http://betterthangrep.com/].
+Execute(Word from cursor):
+  normal! f.h
+  NotGrep \b<cword>\b
+Then:
+  AssertEqual CountQuickFixLines(), 2
+  AssertEqual @/, 'ack'
+
+Given(Some text):
+  Setup notgrep like the original ack.vim [http://betterthangrep.com/].
+Execute(WORD from cursor):
+  normal! f.h
+  NotGrep \b<cWORD>\b
+Then:
+  AssertEqual @/, 'ack.vim'
+  AssertEqual CountQuickFixLines(), 2
+
+Given(Some text):
+  Setup notgrep like the original ack.vim [http://betterthangrep.com/].
+Execute(From selection):
+  normal! 4W"cy2e
+  call notgrep#search#NotGrep('grep', @c)
+Then:
+  AssertEqual @/, 'original ack'
+  AssertEqual CountQuickFixLines(), 1
+

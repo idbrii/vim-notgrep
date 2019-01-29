@@ -99,6 +99,18 @@ In the quickfix window, you can use:
     q    to close the quickfix window
 
 
+### Suggested Mappings ###
+
+    nnoremap <unique> <Leader>jq :<C-u>NotGrepFromSearch<CR>
+    " Search for word (\b is word boundary).
+    nnoremap <unique> <Leader>jw :<C-u>NotGrep \b<cword>\b<CR>
+    nnoremap <unique> <Leader>jW :<C-u>NotGrep \b<cWORD>\b<CR>
+    xnoremap <unique> <Leader>jw "cy:<C-u>call notgrep#search#NotGrep('grep', '\b'. @c .'\b')<CR>
+    " Less precise. Similar to `*` vs `g*`.
+    nnoremap <unique> <Leader>jgw :<C-u>NotGrep <cword><CR>
+    nnoremap <unique> <Leader>jgW :<C-u>NotGrep <cWORD><CR>
+    xnoremap <unique> <Leader>jgw "cy:<C-u>call notgrep#search#NotGrep('grep', @c)<CR>
+
 ## Integration ##
 
 If [AsyncCommand](https://github.com/idbrii/AsyncCommand) is available,

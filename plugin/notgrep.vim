@@ -5,6 +5,8 @@ if exists("g:notgrep_loaded")
 endif
 let g:notgrep_loaded = 1
 
+let g:notgrep_allow_async = get(g:, 'notgrep_allow_async', 1)
+
 " Setup ack as a default
 if !exists('g:notgrep_prg') || !exists("g:notgrep_efm")
     call notgrep#setup#NotGrepUseAck()
@@ -12,7 +14,7 @@ endif
 
 command! -bang -nargs=* -complete=file NotGrep call notgrep#search#NotGrep('grep<bang>',<q-args>)
 command! -bang -nargs=* -complete=file NotGrepAdd call notgrep#search#NotGrep('grepadd<bang>', <q-args>)
-command! -bang -nargs=* -complete=file NotGrepFromSearch call notgrep#search#NotGrepFromSearch('grep<bang>', <q-args>)
+command! -bang -nargs=* -complete=file NotGrepFromSearch call notgrep#search#NotGrepFromSearch('grep<bang>')
 command! -bang -nargs=* -complete=file LNotGrep call notgrep#search#NotGrep('lgrep<bang>', <q-args>)
 command! -bang -nargs=* -complete=file LNotGrepAdd call notgrep#search#NotGrep('lgrepadd<bang>', <q-args>)
 command! -bang -nargs=* -complete=file NotGrepFile call notgrep#search#NotGrep('grep<bang> -g', <q-args>)

@@ -1,0 +1,12 @@
+Execute:
+  function! CountQuickFixLines()
+      return len(getqflist())
+  endf
+
+  function! SetupRecursiveGrep()
+      " Can't do async testing because we won't know when the results come back
+      " and we need to wait for them before continuing.
+      let g:notgrep_allow_async = 0
+      NotGrepUseGrepRecursiveFrom ~/.vim/bundle/notgrep/doc/
+  endf
+
