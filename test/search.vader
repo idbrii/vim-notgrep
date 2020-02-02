@@ -2,6 +2,7 @@ Include: config.vader
 
 Before(Get test functions):
   call SetupRecursiveGrep()
+  let g:notgrep_highlight = 1
 
 Execute(Most common):
   NotGrep csearch
@@ -31,6 +32,14 @@ Execute(Wrapped with quotes):
 Then:
   AssertEqual CountQuickFixLines(), 1
   AssertEqual @/, '"grep -nH"'
+
+Execute(no notgrep_highlight):
+  let @/ = 'previous_query'
+  unlet g:notgrep_highlight
+  NotGrep "grep -nH"
+Then:
+  AssertEqual CountQuickFixLines(), 1
+  AssertEqual @/, 'previous_query'
 
 Execute(From last search):
   let @/ = 'direct'
