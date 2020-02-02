@@ -16,7 +16,11 @@ endfunction
 
 " To use with grep
 function! notgrep#setup#NotGrepUseGrepRecursiveFrom(root_dir)
-    let g:notgrep_prg = &grepprg .' $* -R '. resolve(fnamemodify(expand(a:root_dir), ':p'))
+    " &grepprg default on unix is `grep -n $* /dev/null` which can't be
+    " appended to, so strip off everything after $*. That should keep
+    " desirable flags, but allow us to put our own args and recursive flag.
+    let prg = substitute(&grepprg, '\V$*\v.*', '', '')
+    let g:notgrep_prg = prg .' $* -R '. resolve(fnamemodify(expand(a:root_dir), ':p'))
     let g:notgrep_efm = "%f:%l:%m"
 endfunction
 
