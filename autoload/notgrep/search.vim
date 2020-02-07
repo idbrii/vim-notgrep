@@ -95,6 +95,9 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
     " Don't let the shell get confused by quotes.
     let search = substitute(search,"[\"']",'.','g')
 
+    " Don't replace % or # with filename.
+    let search = escape(search, "%#")
+
     " No easy support for disabling regex so ignore
     let search = substitute(search,'\\V','','g')
     " PCRE word boundaries
