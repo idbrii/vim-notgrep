@@ -20,7 +20,7 @@ function! notgrep#setup#NotGrepUseCsearch()
     let g:notgrep_efm = "%f:%l:%m"
 endfunction
 
-" To use with grep
+" To use with grepprg
 function! notgrep#setup#NotGrepUseGrepRecursiveFrom(root_dir)
     if a:root_dir =~# '^g:\w'
         " If passed a variable, use its value.

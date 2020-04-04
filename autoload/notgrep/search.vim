@@ -143,6 +143,14 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
         " Unescape some multis
         let search = substitute(search,'\v\\([+=?])','\1','g')
     endif
+
+    " Case matching atom
+    " Vim's \c applies to whole pattern. PCRE (?i) applies after it appears,
+    " so move to front.
+    let search = substitute(search, '\v(.*)\C\\c(.*)', '(?i)\1\2', 'g')
+    " No one supports (?c)
+    let search = substitute(search, '\C\\C', '', 'g')
+
     return search
 endfunction
 
