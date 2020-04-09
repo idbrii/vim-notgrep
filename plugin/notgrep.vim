@@ -6,6 +6,7 @@ endif
 let g:notgrep_loaded = 1
 
 let g:notgrep_allow_async = get(g:, 'notgrep_allow_async', 1)
+let g:notgrep_allow_shellescape = get(g:, 'notgrep_allow_shellescape', 1)
 
 " Setup ack as a default
 if !exists('g:notgrep_prg') || !exists("g:notgrep_efm")

@@ -16,7 +16,10 @@ function! notgrep#search#NotGrep(cmd, args)
 
     " Separately store requested query and escaped version for grep.
     let l:query = l:grepargs
-    let l:grepargs = shellescape(l:grepargs)
+    if g:notgrep_allow_shellescape
+        let l:grepargs = shellescape(l:grepargs)
+    endif
+    
 
     " Format, used to manage column jump
     if a:cmd =~# '-g$'
