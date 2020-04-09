@@ -21,6 +21,8 @@ command! -bang -nargs=* -complete=file NotGrepFile call notgrep#search#NotGrep('
 command! -nargs=0 NotGrepUseAck call notgrep#setup#NotGrepUseAck()
 command! -nargs=0 NotGrepUseCsearch call notgrep#setup#NotGrepUseCsearch()
 command! -nargs=0 NotGrepUseRipgrep call notgrep#setup#NotGrepUseRipgrep()
+command! -nargs=1 -complete=dir NotGrepRecursiveFrom call notgrep#setup#NotGrepRecursiveFrom(<f-args>)
+" 'UseGrep' means it uses grepprg.
 command! -nargs=1 -complete=dir NotGrepUseGrepRecursiveFrom call notgrep#setup#NotGrepUseGrepRecursiveFrom(<f-args>)
 
 " vi: et sw=4 ts=4
