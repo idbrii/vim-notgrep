@@ -10,7 +10,12 @@ endfunction
 
 " To use with ripgrep [ https://github.com/BurntSushi/ripgrep ]
 function! notgrep#setup#NotGrepUseRipgrep()
-    let g:notgrep_prg='rg --vimgrep'
+    let g:notgrep_prg = 'rg --vimgrep'
+    if &smartcase
+        let g:notgrep_prg .= ' --smart-case'
+    elseif &ignorecase
+        let g:notgrep_prg .= ' --ignore-case'
+    endif
     let g:notgrep_efm = "%f:%l:%c:%m"
 endfunction
 
