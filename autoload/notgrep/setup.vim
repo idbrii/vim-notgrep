@@ -32,22 +32,46 @@ function! notgrep#setup#NotGrepUseGrepRecursiveFrom(root_dir)
     return notgrep#setup#NotGrepRecursiveFrom(a:root_dir)
 endfunction
 
+function! s:expand_directory(directory)
+    let directory = expand(a:directory)
+    if !isdirectory(directory)
+        return ''
+    endif
+    return resolve(fnamemodify(directory, ':p'))
+endf
+
+function! s:warning(msg)
+    echohl WarningMsg
+    echomsg a:msg
+    echohl None
+endf
+
 " Use grepprg recursively from a directory. Call an above setup function to
 " set the command and efm.
-function! notgrep#setup#NotGrepRecursiveFrom(root_dir)
-    if a:root_dir =~# '^g:\w'
+function! notgrep#setup#NotGrepRecursiveFrom(root_dirs)
+    if type(a:root_dirs) == v:t_string && a:root_dirs =~# '^g:\w'
         " If passed a variable, use its value.
-        let root_dir = get(g:, a:root_dir[2:], '')
+        let root_dirs = get(g:, a:root_dirs[2:], '')
     else
-        let root_dir = a:root_dir
+        let root_dirs = a:root_dirs
     endif
 
-    let root_dir = expand(root_dir)
-    if !isdirectory(root_dir)
-        echohl WarningMsg
-        echomsg 'Failed to find directory: '. a:root_dir
-        echohl None
-        return
+    let root_dir_expanded = ''
+    if type(root_dirs) == v:t_list
+        for d in root_dirs
+            let directory = s:expand_directory(d)
+            if empty(directory)
+                call s:warning('NotGrepRecursiveFrom: Failed to find input directory: '. d)
+                return
+            endif
+            let root_dir_expanded .= directory . ' '
+        endfor
+    else
+        let root_dir_expanded = s:expand_directory(root_dirs)
+        if empty(root_dir_expanded)
+            call s:warning('NotGrepRecursiveFrom: Failed to find input directory: '. root_dirs)
+            return
+        endif
     endif
 
     " &grepprg default on unix is `grep -n $* /dev/null` which can't be
@@ -60,7 +84,7 @@ function! notgrep#setup#NotGrepRecursiveFrom(root_dir)
     if &grepprg =~# '\v<(smart)?grep>'
         let recursive_flag = '-R'
     endif
-    let g:notgrep_prg = printf('%s $* %s %s', prg, recursive_flag, resolve(fnamemodify(root_dir, ':p')))
+    let g:notgrep_prg = printf('%s $* %s %s', prg, recursive_flag, root_dir_expanded)
 endfunction
 
 " vi: et sw=4 ts=4
