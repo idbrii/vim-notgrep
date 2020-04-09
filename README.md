@@ -5,7 +5,7 @@
 You need to install
 [ripgrep](https://github.com/BurntSushi/ripgrep/releases),
 [ack](http://betterthangrep.com/), or
-[codesearch](https://code.google.com/p/codesearch/).
+[codesearch](https://github.com/junkblocker/codesearch/releases).
 
 ### Ack
 

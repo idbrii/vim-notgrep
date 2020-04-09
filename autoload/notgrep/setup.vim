@@ -19,7 +19,7 @@ function! notgrep#setup#NotGrepUseRipgrep()
     let g:notgrep_efm = "%f:%l:%c:%m"
 endfunction
 
-" To use with csearch [ https://code.google.com/p/codesearch/ ]
+" To use with csearch [ https://github.com/junkblocker/codesearch ]
 function! notgrep#setup#NotGrepUseCsearch()
     let g:notgrep_prg='csearch -n'
     let g:notgrep_efm = "%f:%l:%m"

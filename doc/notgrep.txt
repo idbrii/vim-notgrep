@@ -73,7 +73,7 @@ NotGrep has commands to setup some search tools.
 
 :NotGrepUseCsearch
 
-        Setup notgrep to use csearch. [https://code.google.com/p/codesearch/].
+        Setup notgrep to use csearch. [https://github.com/junkblocker/codesearch].
 
 
 ==============================================================================
