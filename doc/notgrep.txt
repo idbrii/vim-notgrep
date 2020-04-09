@@ -54,13 +54,17 @@ line.
 SEARCH TOOLS                                                   *notgrep-tools*
 
 To use notgrep, you need to setup a search program and a corresponding
-errorformat. For example, to use grep with not grep:
+errorformat. For example, to use grep with notgrep:
 >
         let g:notgrep_prg = "grep -nH"
         let g:notgrep_efm = "%f:%l:%m,%f:%l%m,%f  %l%m"
 <
 
 NotGrep has commands to setup some search tools.
+
+:NotGrepUseRipgrep
+
+        Setup notgrep to use ripgrep [https://github.com/BurntSushi/ripgrep].
 
 :NotGrepUseAck
 

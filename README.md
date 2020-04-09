@@ -2,7 +2,10 @@
 
 ## Installation ##
 
-You have to install [ack](http://betterthangrep.com/) or [codesearch](https://code.google.com/p/codesearch/), of course.
+You need to install
+[ripgrep](https://github.com/BurntSushi/ripgrep/releases),
+[ack](http://betterthangrep.com/), or
+[codesearch](https://code.google.com/p/codesearch/).
 
 ### Ack
 
@@ -32,7 +35,7 @@ Install with Gentoo Prefix
 
 Otherwise, you are on your own.
 
-### Code Search
+### Code Search / Ripgrep
 
 Grab the binaries and put them in your $PATH.
 
@@ -86,6 +89,11 @@ Just like where you use :grep, :grepadd, :lgrep, and :lgrepadd, you can use
 
         See ack --help=types for a list of valid types.
 
+### Ripgrep
+
+Behaves similarly to ack, but faster. Automatically sets up --smart-case or
+--ignore-case flags that match your vim settings.
+
 ### Keyboard Shortcuts ###
 
 In the quickfix window, you can use:
@@ -113,9 +121,9 @@ In the quickfix window, you can use:
 
 ## Integration ##
 
-If [AsyncCommand](https://github.com/idbrii/AsyncCommand) is available,
-`:NotGrep` search will be asynchronous. Other commands (`:NotGrepAdd`, etc)
-will still be synchronous.
+If [AsyncCommand](https://github.com/idbrii/AsyncCommand) or another
+`:AsyncGrep` command is available, `:NotGrep` search will be asynchronous.
+Other commands (`:NotGrepAdd`, etc) will still be synchronous.
 
 
 ## About ##
