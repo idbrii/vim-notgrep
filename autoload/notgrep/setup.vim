@@ -37,7 +37,11 @@ function! s:expand_directory(directory)
     if !isdirectory(directory)
         return ''
     endif
-    return resolve(fnamemodify(directory, ':p'))
+    let directory = fnamemodify(directory, ':p')
+    if g:notgrep_resolve_paths
+        let directory = resolve(directory)
+    endif
+    return directory
 endf
 
 function! s:warning(msg)
