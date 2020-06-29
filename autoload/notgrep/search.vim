@@ -53,17 +53,6 @@ function! notgrep#search#NotGrep(cmd, args)
         endif
     endif
 
-    if !exists("g:notgrep_no_mappings") || !g:notgrep_no_mappings
-        exec "nnoremap <silent> <buffer> q :ccl<CR>"
-        exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
-        exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W><C-W>"
-        exec "nnoremap <silent> <buffer> o <CR>"
-        exec "nnoremap <silent> <buffer> go <CR><C-W><C-W>"
-        exec "nnoremap <silent> <buffer> v <C-W><C-W><C-W>v<C-L><C-W><C-J><CR>"
-        exec "nnoremap <silent> <buffer> gv <C-W><C-W><C-W>v<C-L><C-W><C-J><CR><C-W><C-J>"
-    endif
-
-
     " If highlighting is on, highlight the search keyword.
     if exists("g:notgrep_highlight")
         let @/ = notgrep#search#ConvertRegexPerlToVim(l:query)
