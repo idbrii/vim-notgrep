@@ -60,7 +60,11 @@ function! notgrep#search#NotGrep(cmd, args)
     end
 
     redraw!
-    echo "Searching ..."
+    if v:shell_error == 0 || use_asyncgrep
+        echo "Searching ..."
+    else
+        echo "Search failed"
+    endif
 endfunction
 
 function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
