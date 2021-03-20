@@ -85,8 +85,13 @@ function! notgrep#setup#NotGrepRecursiveFrom(root_dirs)
     let recursive_flag = ''
     " POSIX grep needs -R to be recursive, but replacements tend to be
     " recursive by default. smartgrep is a grep wrapper from vim-searchsavvy.
-    if &grepprg =~# '\v<(smart)?grep>'
+    if g:notgrep_prg =~# '\v<(smart)?grep>'
         let recursive_flag = '-R'
+    endif
+    if prg =~# '\v<(smart)?grep> -nH$'
+        " Use extended regex because it makes grep parse more like ripgrep
+        " which is easier to translate to.
+        let prg .= 'E'
     endif
     let g:notgrep_prg = printf('%s $* %s %s', prg, recursive_flag, root_dir_expanded)
 endfunction
