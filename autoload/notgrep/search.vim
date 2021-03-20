@@ -91,6 +91,13 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
     " Don't let the shell get confused by quotes.
     let search = substitute(search,"[\"']",'.','g')
 
+    " Don't support non grouping parens. % is hard to escape for AsyncGrep.
+    if was_verymagic
+        let search = substitute(search, '%(', '(', 'g')
+    else
+        let search = substitute(search, '\\%(', '\\(', 'g')
+    endif
+
     " Don't replace % or # with filename.
     let search = escape(search, "%#")
 
@@ -126,8 +133,10 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
     endfor
 
     if was_verymagic
-        " Always need to escape pipe in shell
-        let search = substitute(search, '|','\\|','g')
+        " Always need to escape pipe in unix shell
+        if !has('win32')
+            let search = substitute(search, '|','\\|','g')
+        endif
     else
         " PCRE operates a bit like verymagic, so remove some escaping
 
