@@ -17,6 +17,10 @@ function! notgrep#setup#NotGrepUseRipgrep()
         let g:notgrep_prg .= ' --ignore-case'
     endif
     let g:notgrep_efm = "%f:%l:%c:%m"
+    " Ripgrep is automatically recursive, but includes a --type argument to
+    " limit which files are searched.
+    command! -bang -nargs=* -complete=file NotGrepCurrentFiletype           call notgrep#search#NotGrep('grep<bang>', <q-args>, '--type '.. &filetype)
+    command! -bang -nargs=0                NotGrepCurrentFiletypeFromSearch call notgrep#search#NotGrepFromSearch('grep<bang>', '--type '.. &filetype)
 endfunction
 
 " To use with csearch [ https://github.com/junkblocker/codesearch ]

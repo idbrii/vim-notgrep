@@ -2,16 +2,16 @@
 "
 " Search and core plugin implementation.
 
-function! notgrep#search#NotGrep(cmd, args)
+function! notgrep#search#NotGrep(cmd, query, additional_args)
     " Use AsyncCommand's :AsyncGrep if possible.
-    " Only grep is replaceable with async grep. Others do vim-specific stuff.
+    " Only :grep is replaceable with async grep. Others do vim-specific stuff.
     let use_asyncgrep = g:notgrep_allow_async && exists(':AsyncGrep') == 2 && a:cmd == 'grep'
 
     " If no pattern is provided, search for the word under the cursor
-    if empty(a:args)
+    if empty(a:query)
         let l:grepargs = expand("<cword>")
     else
-        let l:grepargs = a:args
+        let l:grepargs = a:query
     end
 
     " Separately store requested query and escaped version for grep.
@@ -27,6 +27,8 @@ function! notgrep#search#NotGrep(cmd, args)
     else
         let l:grepformat = g:notgrep_efm
     end
+
+    let l:grepargs = printf('%s %s', a:additional_args, l:grepargs)
 
     let grepprg_bak = &grepprg
     let grepformat_bak = &grepformat
@@ -166,10 +168,10 @@ function! notgrep#search#ConvertRegexPerlToVim(perl_regex)
     return search
 endfunction
 
-function! notgrep#search#NotGrepFromSearch(cmd)
+function! notgrep#search#NotGrepFromSearch(cmd, additional_args)
     let vim_search = getreg('/')
     let search = notgrep#search#ConvertRegexVimToPerl(vim_search)
-    call notgrep#search#NotGrep(a:cmd, search)
+    call notgrep#search#NotGrep(a:cmd, search, a:additional_args)
 
     " The conversion is lossy, so keep our original query.
     let @/=vim_search
