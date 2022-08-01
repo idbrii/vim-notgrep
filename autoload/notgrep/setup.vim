@@ -11,6 +11,13 @@ endfunction
 " To use with ripgrep [ https://github.com/BurntSushi/ripgrep ]
 function! notgrep#setup#NotGrepUseRipgrep()
     let g:notgrep_prg = 'rg --vimgrep'
+    if g:notgrep_ripgrep_fold_matches
+        " vimgrep shows multiple entries for mulitple matches within a line
+        " (all column positions), but that works poorly with tools like
+        " qf-reflector.
+        let g:notgrep_prg = 'rg --column'
+    endif
+
     if &smartcase
         let g:notgrep_prg .= ' --smart-case'
     elseif &ignorecase
