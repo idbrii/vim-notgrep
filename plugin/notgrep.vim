@@ -7,6 +7,7 @@ let g:notgrep_loaded = 1
 
 let g:notgrep_allow_async = get(g:, 'notgrep_allow_async', 1)
 let g:notgrep_allow_shellescape = get(g:, 'notgrep_allow_shellescape', 1)
+let g:notgrep_auto_shellslash = get(g:, 'notgrep_auto_shellslash', 1)
 
 " Disable so you can use symlinks to work around inability of passing paths
 " containing spaces to ripgrep.

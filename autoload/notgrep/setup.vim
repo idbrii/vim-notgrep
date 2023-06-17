@@ -24,6 +24,8 @@ function! notgrep#setup#NotGrepUseRipgrep()
         let g:notgrep_prg .= ' --ignore-case'
     endif
     let g:notgrep_efm = "%f:%l:%c:%m"
+    " Prevent "regex parse error: unrecognized escape sequence"
+    let g:notgrep_auto_shellslash = 1
     " Ripgrep is automatically recursive, but includes a --type argument to
     " limit which files are searched.
     command! -bang -nargs=* -complete=file NotGrepCurrentFiletype           call notgrep#search#NotGrep('grep<bang>', <q-args>, '--type '.. s:to_ripgrep_filetype(&filetype))
@@ -51,6 +53,21 @@ function! notgrep#setup#NotGrepUseGrepRecursiveFrom(root_dir)
 endfunction
 
 function! s:expand_directory(directory)
+    let reset_shellslash = 0
+    if g:notgrep_auto_shellslash && exists('&shellslash') && !&shellslash
+        let reset_shellslash = 1
+        set shellslash
+    endif
+
+    let expanded = s:expand_dir_internal(a:directory)
+
+    if reset_shellslash
+        set noshellslash
+    endif
+    return expanded
+endf
+
+function! s:expand_dir_internal(directory) abort
     let directory = expand(a:directory)
     if !isdirectory(directory)
         return ''
