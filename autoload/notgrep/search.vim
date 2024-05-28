@@ -84,6 +84,13 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
         let unescape = '\\'
     endif
 
+    " No easy support for disabling regex so just escape.
+    if search =~# '\\V'
+        let search = substitute(search, '\C\\V', '', 'g')
+        " Escape {} later for magic but not verymagic.
+        let search = escape(search, '^$.*[]')
+    endif
+    
     " Some funky scripting for notgrep_prg may not handle spaces (using xargs
     " to grep a list of files).
     if exists("g:notgrep_replace_space_with_dot") && g:notgrep_replace_space_with_dot
@@ -98,13 +105,12 @@ function! notgrep#search#ConvertRegexVimToPerl(vim_regex)
         let search = substitute(search, '%(', '(', 'g')
     else
         let search = substitute(search, '\\%(', '\\(', 'g')
+        let search = escape(search, "{}")
     endif
 
     " Don't replace % or # with filename.
     let search = escape(search, "%#")
 
-    " No easy support for disabling regex so ignore
-    let search = substitute(search,'\\V','','g')
     " PCRE word boundaries
     let search = substitute(search,'\('. escape .'<\|'. escape .'>\)','\\b','g')
 
